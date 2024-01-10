@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidationUtils {
+public class ProfesorValidations {
 
     @Autowired
     private ProfesorService profesorService;
@@ -18,7 +18,6 @@ public class ValidationUtils {
     public List<String> isValidProfesor(Profesor profesor) {
 
         List<String> profesorErrors = new ArrayList<>();
-        
 
         if( profesor.getCi() == null){
             profesorErrors.add("El profesor debe ser registrado con un CI");

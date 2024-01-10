@@ -14,7 +14,7 @@ public class Materia {
     @Id
     private String id;
 
-    @Column( nullable = false, length = 60 )
+    @Column( nullable = false, length = 60, unique = true )
     private String name;
 
     @Column( nullable = false, columnDefinition = "TINYINT" )
