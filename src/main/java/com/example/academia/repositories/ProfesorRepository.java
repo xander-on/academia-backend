@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.example.academia.models.Profesor;
 
 @Repository
-public interface ProfesorRepository extends JpaRepository<Profesor, Long> {
+public interface ProfesorRepository extends JpaRepository<Profesor, String> {
     
+    Profesor findAllByCi( String ci );
 }
