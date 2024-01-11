@@ -1,6 +1,5 @@
 package com.example.academia.service;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +21,10 @@ public class ProfesorService {
         return this.profesorRepository.findAll();
     }
 
+    public List<Profesor> getAllActiveProfesores(){
+        return this.profesorRepository.findAllByActiveTrue();
+    }
+
     public Profesor getProfesorById( String id ){
         return this.profesorRepository.findById( id ).orElse(null);
     }
@@ -32,5 +35,10 @@ public class ProfesorService {
 
     public boolean existsProfesorByCi( String ci ){
         return this.profesorRepository.findAllByCi( ci ) != null;
+    }
+
+    public Profesor deleteProfesor( Profesor profesor ){
+        profesor.setActive(false);
+        return this.profesorRepository.save(profesor);
     }
 }

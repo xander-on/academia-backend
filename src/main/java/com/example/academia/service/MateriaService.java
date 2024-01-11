@@ -20,11 +20,25 @@ public class MateriaService {
         return this.materiaRepository.findAll();
     }
 
+    public List<Materia> getAllActiveMaterias() {
+        return this.materiaRepository.findAllByActiveTrue();
+    }
+
+    public Materia getMateriaById( String id ){
+        return this.materiaRepository.findById( id ).orElse(null);
+    }
+
     public Materia postMateria( Materia materia ){
         return this.materiaRepository.save(materia);
     }
 
     public boolean existsMateriaByName( String name ){
         return this.materiaRepository.findFirstByName( name ) != null;
+    }
+
+
+    public Materia deleteMateria( Materia materia ){
+        materia.setActive(false);
+        return this.materiaRepository.save(materia);
     }
 }
