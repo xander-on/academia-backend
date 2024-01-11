@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -39,6 +40,14 @@ public class ProfesorController {
         return ResponseEntity.ok(profesorService.getAllProfesores());
     }
 
+
+    @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Profesor> getProfesorById( @PathVariable String id ) {
+
+        return ResponseEntity.ok(profesorService.getProfesorById(id));
+    }
+
     @PostMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postProfesor( @RequestBody Profesor profesor ) {
@@ -48,6 +57,7 @@ public class ProfesorController {
         if( !profesorErrors.isEmpty() ) {
             Map<String, Object> responseErrors = new HashMap<>();
             responseErrors.put("errors", profesorErrors);
+            responseErrors.put("ok", false);
             return ResponseEntity.badRequest()
                 .body(responseErrors);
         }

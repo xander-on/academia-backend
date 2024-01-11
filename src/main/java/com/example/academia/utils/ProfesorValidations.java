@@ -23,7 +23,7 @@ public class ProfesorValidations {
             profesorErrors.add("El profesor debe ser registrado con un CI");
         }
 
-        if( profesor.getName() == null){
+        if( profesor.getName() == null || profesor.getName().isEmpty()){
             profesorErrors.add("El profesor debe ser registrado con un Nombre");
         }
 

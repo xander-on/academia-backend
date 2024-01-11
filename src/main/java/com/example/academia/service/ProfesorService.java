@@ -22,6 +22,10 @@ public class ProfesorService {
         return this.profesorRepository.findAll();
     }
 
+    public Profesor getProfesorById( String id ){
+        return this.profesorRepository.findById( id ).orElse(null);
+    }
+
     public Profesor postProfesor( Profesor profesor ){
         return this.profesorRepository.save(profesor);
     }

@@ -19,7 +19,7 @@ public class MateriaValidations {
         List<String> materiaErrors = new ArrayList<>();
 
         if( materia.getName() == null){
-            materiaErrors.add("El profesor debe ser registrado con un nombre");
+            materiaErrors.add("La materia debe ser registrado con un nombre (name)");
         }
 
         if( materiaService.existsMateriaByName(materia.getName()) ){
