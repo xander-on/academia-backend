@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class AulaController {
     @GetMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllActiveMaterias() {
-        List<Aula> aulas = aulaService.getAllAulas();
+        List<Aula> aulas = aulaService.getAllActiveAulas();
         HashMap<String, Object> response = new HashMap<>();
 
         response.put("ok", true);
@@ -68,6 +69,7 @@ public class AulaController {
         return ResponseEntity.ok(response);
     }
 
+
     @PostMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postAula( @RequestBody Aula aula ) {
@@ -82,6 +84,30 @@ public class AulaController {
         aula.setIdAula( UUID.randomUUID().toString() );
         aula.setActive(true);
         return ResponseEntity.ok(aulaService.postAula(aula));
-        
+    }
+
+
+    @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<?> deleteAula( @PathVariable String id ) {
+
+        HashMap<String, Object> response = new HashMap<>();
+        Aula aulaSearched = aulaService.getAulaById(id);
+
+        if( aulaSearched == null ) {
+            response.put("ok", false);
+            response.put("results",  new Object[0]);
+            return ResponseEntity.ok(response);
+        }
+
+        Aula aulaDeleted = aulaService.deleteAula(aulaSearched);
+
+        List<Aula> resultsList = new ArrayList<>();
+        resultsList.add(aulaDeleted);
+
+        response.put("ok", true);
+        response.put("results", resultsList);
+
+        return ResponseEntity.ok(response);
     }
 }

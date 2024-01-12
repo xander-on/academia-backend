@@ -20,11 +20,20 @@ public class AulaService {
         return this.aulaRepository.findAll();
     }
 
+    public List<Aula> getAllActiveAulas(){
+        return this.aulaRepository.findAllByActiveTrue();
+    }
+
     public Aula getAulaById( String id ){
         return this.aulaRepository.findById(id).orElse(null);
     }
 
     public Aula postAula( Aula aula ){
+        return this.aulaRepository.save( aula );
+    }
+
+    public Aula deleteAula( Aula aula ){
+        aula.setActive(false);
         return this.aulaRepository.save( aula );
     }
 }
