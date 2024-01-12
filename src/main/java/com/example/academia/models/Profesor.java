@@ -29,4 +29,7 @@ public class Profesor {
 
     @Column( columnDefinition = "TINYINT" )
     private boolean active;
+
+    @Column
+    private String photo;
 }

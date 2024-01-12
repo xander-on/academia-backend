@@ -83,6 +83,7 @@ public class AulaController {
 
         aula.setIdAula( UUID.randomUUID().toString() );
         aula.setActive(true);
+        
         return ResponseEntity.ok(aulaService.postAula(aula));
     }
 

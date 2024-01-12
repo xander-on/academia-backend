@@ -1,8 +1,5 @@
 package com.example.academia.web.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.academia.models.Profesor;
 import com.example.academia.service.ProfesorService;
 import com.example.academia.utils.ProfesorValidations;
@@ -84,6 +81,7 @@ public class ProfesorController {
         
         profesor.setIdProfesor( UUID.randomUUID().toString() );
         profesor.setActive(true);
+        profesor.setPhoto("https://api.multiavatar.com/"+ profesor.getIdProfesor() +".png");
         Profesor profesorAdd = profesorService.postProfesor(profesor);
 
         List<Profesor> resultsList = new ArrayList<>();
