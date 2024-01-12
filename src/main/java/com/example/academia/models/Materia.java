@@ -12,11 +12,13 @@ import lombok.Setter;
 @Table(name = "materias")
 public class Materia {
     @Id
-    private String id;
+    @Column( name="id_materia", nullable = false, unique = true )
+    private String idMateria;
 
     @Column( nullable = false, length = 60, unique = true )
     private String name;
 
     @Column( nullable = false, columnDefinition = "TINYINT" )
     private boolean active;
+
 }

@@ -75,7 +75,7 @@ public class MateriaController {
                 .body(responseErrors);
         }
 
-        materia.setId( UUID.randomUUID().toString() );
+        materia.setIdMateria( UUID.randomUUID().toString() );
         materia.setActive(true);
         return ResponseEntity.ok(materiaService.postMateria(materia));
     }

@@ -3,7 +3,6 @@ package com.example.academia.web.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.academia.models.Materia;
 import com.example.academia.models.Profesor;
 import com.example.academia.service.ProfesorService;
 import com.example.academia.utils.ProfesorValidations;
@@ -16,12 +15,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -75,8 +69,9 @@ public class ProfesorController {
     @PostMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postProfesor( @RequestBody Profesor profesor ) {
-        
+
         List<String> profesorErrors = profesorValidations.isValidProfesor(profesor);
+        HashMap<String, Object> response = new HashMap<>();
 
         if( !profesorErrors.isEmpty() ) {
             Map<String, Object> responseErrors = new HashMap<>();
@@ -86,9 +81,18 @@ public class ProfesorController {
                 .body(responseErrors);
         }
 
-        profesor.setId( UUID.randomUUID().toString() );
+        
+        profesor.setIdProfesor( UUID.randomUUID().toString() );
         profesor.setActive(true);
-        return ResponseEntity.ok(profesorService.postProfesor(profesor));
+        Profesor profesorAdd = profesorService.postProfesor(profesor);
+
+        List<Profesor> resultsList = new ArrayList<>();
+        resultsList.add(profesorAdd);
+
+        response.put("ok", true);
+        response.put("results", resultsList );
+
+        return ResponseEntity.ok(response);
     }
 
 

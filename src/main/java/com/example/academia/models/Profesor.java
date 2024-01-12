@@ -14,9 +14,10 @@ import lombok.Setter;
 @Table(name="profesores")
 public class Profesor {
     @Id
-    private String id;
+    @Column( name="id_profesor", nullable = false, unique = true )
+    private String idProfesor;
 
-    @Size(min = 10, max = 10, message = "La CI debe tener exactamente 10 caracteres")
+    @Size(min = 10, max = 10)
     @Column( nullable = false, length = 10, unique = true )
     private String ci;
 

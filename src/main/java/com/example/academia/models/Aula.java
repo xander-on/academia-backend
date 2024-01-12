@@ -3,14 +3,30 @@ package com.example.academia.models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter @Setter
+@NoArgsConstructor
+@Table( name="aulas" )
 public class Aula {
     @Id
-    private String id;
+    @Column( name="id_aula", nullable = false, unique = true )
+    private String idAula;
 
-    @Column( nullable = false, length = 60, unique = true )
+    @Column( nullable = false, length = 10)
     private String codigo;
 
     @Column( nullable = false )
@@ -24,4 +40,19 @@ public class Aula {
 
     @Column( nullable = false, columnDefinition = "TINYINT" )
     private boolean active;
+
+
+    @ManyToOne
+    // @JsonIgnore
+    @JoinColumn(
+        name = "id_materia",
+        referencedColumnName = "id_materia"
+    ) private Materia materia;
+
+    @ManyToOne
+    // @JsonIgnore
+    @JoinColumn(
+        name = "id_profesor",
+        referencedColumnName = "id_profesor"
+    ) private Profesor profesor;
 }
