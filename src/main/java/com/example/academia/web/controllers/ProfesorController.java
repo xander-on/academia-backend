@@ -72,8 +72,8 @@ public class ProfesorController {
 
         if( !profesorErrors.isEmpty() ) {
             Map<String, Object> responseErrors = new HashMap<>();
-            responseErrors.put("errors", profesorErrors);
             responseErrors.put("ok", false);
+            responseErrors.put("errors", profesorErrors);
             return ResponseEntity.badRequest()
                 .body(responseErrors);
         }

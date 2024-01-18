@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.academia.models.Aula;
 import com.example.academia.service.AulaService;
 import com.example.academia.utils.AulaValidations;
-import com.example.academia.utils.MateriaValidations;
 
 @RestController
 @RequestMapping("/api-academia/v1/aulas")
@@ -74,17 +73,26 @@ public class AulaController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postAula( @RequestBody Aula aula ) {
         List<String> aulaErrors = aulaValidations.isValidAula(aula);
+        HashMap<String, Object> response = new HashMap<>();
 
         if( !aulaErrors.isEmpty() ) {
             Map<String, Object> responseErrors = new HashMap<>();
+            responseErrors.put("ok", false);
             responseErrors.put("errors", aulaErrors);
             return ResponseEntity.badRequest().body(responseErrors);
         }
 
         aula.setIdAula( UUID.randomUUID().toString() );
         aula.setActive(true);
+        Aula aulaAdd = aulaService.postAula(aula);
+
+        List<Aula> resultsList = new ArrayList<>();
+        resultsList.add(aulaAdd);
+
+        response.put("ok", true);
+        response.put("results", resultsList );
         
-        return ResponseEntity.ok(aulaService.postAula(aula));
+        return ResponseEntity.ok(response);
     }
 
 

@@ -67,9 +67,11 @@ public class MateriaController {
     public ResponseEntity<?> postMateria( @RequestBody Materia materia ) {
 
         List<String> materiaErrors = materiaValidations.isValidMateria(materia);
+        HashMap<String, Object> response = new HashMap<>();
 
         if( !materiaErrors.isEmpty() ) {
             Map<String, Object> responseErrors = new HashMap<>();
+            responseErrors.put("ok", false);
             responseErrors.put("errors", materiaErrors);
             return ResponseEntity.badRequest()
                 .body(responseErrors);
@@ -77,7 +79,13 @@ public class MateriaController {
 
         materia.setIdMateria( UUID.randomUUID().toString() );
         materia.setActive(true);
-        return ResponseEntity.ok(materiaService.postMateria(materia));
+        Materia materiaAdd = materiaService.postMateria(materia);
+        List<Materia> resultsList = new ArrayList<>();
+        resultsList.add(materiaAdd);
+
+        response.put("ok", true);
+        response.put("results", resultsList );
+        return ResponseEntity.ok(response);
     }
 
 
