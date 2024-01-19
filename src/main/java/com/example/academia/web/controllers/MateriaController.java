@@ -1,9 +1,6 @@
 package com.example.academia.web.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.academia.models.Materia;
 import com.example.academia.service.MateriaService;
+import com.example.academia.utils.GenerateResponse;
 import com.example.academia.utils.MateriaValidations;
 
 @RestController
@@ -22,43 +20,30 @@ public class MateriaController {
 
     @Autowired
     private MateriaValidations materiaValidations;
+    
+    @Autowired
+    private GenerateResponse generateResponse;
 
     public MateriaController(MateriaService materiaService) {
         this.materiaService = materiaService;
     }
 
+    
     @GetMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllActiveMaterias() {
         List<Materia> materias = materiaService.getAllActiveMaterias();
-        HashMap<String, Object> response = new HashMap<>();
-
-        response.put("ok", true);
-        response.put("results", materias);
-        response.put("total", materias.size());
-        
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(materias);
     }
 
 
     @GetMapping("/{id}")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> getProfesorById( @PathVariable String id ) {
+    public ResponseEntity<?> getMateriaById( @PathVariable String id ) {
+        List<String> materiaErrors = materiaValidations.isValidMateriaId(id);
         Materia materia = materiaService.getMateriaById(id);
-        HashMap<String, Object> response = new HashMap<>();
-        
-        if( materia == null ) {
-            response.put("ok", true);
-            response.put("results", new Object[0]);
-            return ResponseEntity.ok(response);
-        }
 
-        List<Materia> resultsList = new ArrayList<>();
-        resultsList.add(materia);
-
-        response.put("ok", true);
-        response.put("results", resultsList);
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse( materia, materiaErrors );
     }
 
 
@@ -66,51 +51,34 @@ public class MateriaController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postMateria( @RequestBody Materia materia ) {
 
+        Materia materiaAdd = null;
         List<String> materiaErrors = materiaValidations.isValidMateria(materia);
-        HashMap<String, Object> response = new HashMap<>();
 
-        if( !materiaErrors.isEmpty() ) {
-            Map<String, Object> responseErrors = new HashMap<>();
-            responseErrors.put("ok", false);
-            responseErrors.put("errors", materiaErrors);
-            return ResponseEntity.badRequest()
-                .body(responseErrors);
+        if( materiaErrors.isEmpty() ) {
+            materia.setIdMateria( UUID.randomUUID().toString() );
+            materia.setActive(true);
+            materiaAdd = materiaService.postMateria(materia);
         }
-
-        materia.setIdMateria( UUID.randomUUID().toString() );
-        materia.setActive(true);
-        Materia materiaAdd = materiaService.postMateria(materia);
-        List<Materia> resultsList = new ArrayList<>();
-        resultsList.add(materiaAdd);
-
-        response.put("ok", true);
-        response.put("results", resultsList );
-        return ResponseEntity.ok(response);
+        
+        return generateResponse.getResponse( materiaAdd, materiaErrors );
     }
-
 
     //delete logico
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> deleteMateria( @PathVariable String id ) {
-
-        HashMap<String, Object> response = new HashMap<>();
-        Materia materiaSearched = materiaService.getMateriaById(id);
-
-        if( materiaSearched == null ) {
-            response.put("ok", false);
-            response.put("results",  new Object[0]);
-            return ResponseEntity.ok(response);
+    public ResponseEntity<?> deleteMateriaById( @PathVariable String id ) {
+        Materia materiaDeleted = null;
+        List<String> materiaErrors = materiaValidations.isValidMateriaId(id);
+        
+        if( materiaErrors.isEmpty() ) {
+            materiaDeleted = materiaService.deleteMateriaById( id );
         }
 
-        Materia materiaDeleted = materiaService.deleteMateria(materiaSearched);
-
-        List<Materia> resultsList = new ArrayList<>();
-        resultsList.add(materiaDeleted);
-
-        response.put("ok", true);
-        response.put("results", resultsList);
-
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse( materiaDeleted, materiaErrors );
     }
 }
+
+
+
+
+    
