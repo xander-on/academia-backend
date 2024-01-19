@@ -37,7 +37,8 @@ public class ProfesorService {
         return this.profesorRepository.findAllByCi( ci ) != null;
     }
 
-    public Profesor deleteProfesor( Profesor profesor ){
+    public Profesor deleteProfesorById( String id ){
+        Profesor profesor = getProfesorById(id);
         profesor.setActive(false);
         return this.profesorRepository.save(profesor);
     }

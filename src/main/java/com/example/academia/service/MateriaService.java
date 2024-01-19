@@ -38,8 +38,8 @@ public class MateriaService {
 
 
     public Materia deleteMateriaById( String id ){
-        Materia materiaSearched = getMateriaById(id);
-        materiaSearched.setActive(false);
-        return this.materiaRepository.save(materiaSearched);
+        Materia materia = getMateriaById(id);
+        materia.setActive(false);
+        return this.materiaRepository.save(materia);
     }
 }

@@ -2,6 +2,7 @@ package com.example.academia.web.controllers;
 
 import com.example.academia.models.Profesor;
 import com.example.academia.service.ProfesorService;
+import com.example.academia.utils.GenerateResponse;
 import com.example.academia.utils.ProfesorValidations;
 
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ public class ProfesorController {
     @Autowired
     private ProfesorValidations profesorValidations;
 
+    @Autowired
+    private GenerateResponse generateResponse;
+
     public ProfesorController(ProfesorService profesorService) {
         this.profesorService = profesorService;
     }
@@ -32,34 +36,21 @@ public class ProfesorController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllActiveProfesores() {
         List<Profesor> profesores = profesorService.getAllActiveProfesores();
-        HashMap<String, Object> response = new HashMap<>();
-
-        response.put("ok", true);
-        response.put("results", profesores);
-        response.put("total", profesores.size());
-
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(profesores);
     }
 
 
     @GetMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getProfesorById( @PathVariable String id ) {
-        Profesor profesor = profesorService.getProfesorById(id);
-        HashMap<String, Object> response = new HashMap<>();
-        
-        if( profesor == null ) {
-            response.put("ok", true);
-            response.put("results", new Object[0]);
-            return ResponseEntity.ok().body(response);
-        }
 
-        List<Profesor> resultsList = new ArrayList<>();
-        resultsList.add(profesor);
+        List<String> profesorErrors = profesorValidations.isValidId(id);
+        Profesor profesor = null;
 
-        response.put("ok", true);
-        response.put("results", resultsList);
-        return ResponseEntity.ok(response);
+        if( profesorErrors.isEmpty() )
+            profesor = profesorService.getProfesorById(id);
+
+        return generateResponse.getResponse(profesor, profesorErrors);
     }
 
 
@@ -67,56 +58,30 @@ public class ProfesorController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postProfesor( @RequestBody Profesor profesor ) {
 
+        Profesor profesorAdd = null;
         List<String> profesorErrors = profesorValidations.isValidProfesor(profesor);
-        HashMap<String, Object> response = new HashMap<>();
 
-        if( !profesorErrors.isEmpty() ) {
-            Map<String, Object> responseErrors = new HashMap<>();
-            responseErrors.put("ok", false);
-            responseErrors.put("errors", profesorErrors);
-            return ResponseEntity.badRequest()
-                .body(responseErrors);
+        if( profesorErrors.isEmpty() ) {
+            profesor.setIdProfesor( UUID.randomUUID().toString() );
+            profesor.setActive(true);
+            profesor.setPhoto("https://api.multiavatar.com/"+ profesor.getIdProfesor() +".png");
+            profesorAdd = profesorService.postProfesor(profesor);
         }
 
-        
-        profesor.setIdProfesor( UUID.randomUUID().toString() );
-        profesor.setActive(true);
-        profesor.setPhoto("https://api.multiavatar.com/"+ profesor.getIdProfesor() +".png");
-        Profesor profesorAdd = profesorService.postProfesor(profesor);
-
-        List<Profesor> resultsList = new ArrayList<>();
-        resultsList.add(profesorAdd);
-
-        response.put("ok", true);
-        response.put("results", resultsList );
-
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(profesorAdd, profesorErrors);
     }
 
 
-    //delete logico
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> deleteProfesor( @PathVariable String id ) {
 
-        HashMap<String, Object> response = new HashMap<>();
-        Profesor profesorSearched = profesorService.getProfesorById(id);
+        Profesor materiaDeleted = null;
+        List<String> profesorErrors = profesorValidations.isValidId(id);
 
-        if( profesorSearched == null ) {
-            response.put("ok", false);
-            response.put("results",  new Object[0]);
-            return ResponseEntity.ok(response);
-        }
+        if( profesorErrors.isEmpty() )
+            materiaDeleted = profesorService.deleteProfesorById(id);
 
-        Profesor materiaDeleted = profesorService.deleteProfesor(profesorSearched);
-
-        List<Profesor> resultsList = new ArrayList<>();
-        resultsList.add(materiaDeleted);
-
-        response.put("ok", true);
-        response.put("results", resultsList);
-
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(materiaDeleted, profesorErrors);
     }
-    
 }

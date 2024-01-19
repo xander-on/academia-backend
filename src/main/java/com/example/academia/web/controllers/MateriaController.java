@@ -41,7 +41,10 @@ public class MateriaController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getMateriaById( @PathVariable String id ) {
         List<String> materiaErrors = materiaValidations.isValidMateriaId(id);
-        Materia materia = materiaService.getMateriaById(id);
+        Materia materia = null;
+
+        if( materiaErrors.isEmpty() )
+            materia = materiaService.getMateriaById(id);
 
         return generateResponse.getResponse( materia, materiaErrors );
     }
@@ -70,9 +73,8 @@ public class MateriaController {
         Materia materiaDeleted = null;
         List<String> materiaErrors = materiaValidations.isValidMateriaId(id);
         
-        if( materiaErrors.isEmpty() ) {
+        if( materiaErrors.isEmpty() ) 
             materiaDeleted = materiaService.deleteMateriaById( id );
-        }
 
         return generateResponse.getResponse( materiaDeleted, materiaErrors );
     }
