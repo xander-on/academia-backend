@@ -60,33 +60,6 @@ public class AulaController {
         return generateResponse.getResponse(aula, errors);
     }
 
-
-    // @PostMapping()
-    // @CrossOrigin(origins = "*")
-    // public ResponseEntity<?> postAula( @RequestBody Aula aula ) {
-    //     List<String> aulaErrors = aulaValidations.isValidAula(aula);
-    //     HashMap<String, Object> response = new HashMap<>();
-
-    //     if( !aulaErrors.isEmpty() ) {
-    //         Map<String, Object> responseErrors = new HashMap<>();
-    //         responseErrors.put("ok", false);
-    //         responseErrors.put("errors", aulaErrors);
-    //         return ResponseEntity.badRequest().body(responseErrors);
-    //     }
-
-    //     aula.setIdAula( UUID.randomUUID().toString() );
-    //     aula.setActive(true);
-    //     Aula aulaAdd = aulaService.postAula(aula);
-
-    //     List<Aula> resultsList = new ArrayList<>();
-    //     resultsList.add(aulaAdd);
-
-    //     response.put("ok", true);
-    //     response.put("results", resultsList );
-        
-    //     return ResponseEntity.ok(response);
-    // }
-
     @PostMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postAula( @RequestBody Aula aula ) {
@@ -107,23 +80,12 @@ public class AulaController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> deleteAula( @PathVariable String id ) {
 
-        HashMap<String, Object> response = new HashMap<>();
-        Aula aulaSearched = aulaService.getAulaById(id);
+        Aula aulaDeleted = null;
+        List<String> errors = aulaValidations.isValidId(id);
 
-        if( aulaSearched == null ) {
-            response.put("ok", false);
-            response.put("results",  new Object[0]);
-            return ResponseEntity.ok(response);
-        }
+        if( errors.isEmpty() ) 
+            aulaDeleted = aulaService.deleteAulaById(id);
 
-        Aula aulaDeleted = aulaService.deleteAula(aulaSearched);
-
-        List<Aula> resultsList = new ArrayList<>();
-        resultsList.add(aulaDeleted);
-
-        response.put("ok", true);
-        response.put("results", resultsList);
-
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(aulaDeleted, errors);
     }
 }

@@ -32,7 +32,8 @@ public class AulaService {
         return this.aulaRepository.save( aula );
     }
 
-    public Aula deleteAula( Aula aula ){
+    public Aula deleteAulaById( String id ){
+        Aula aula = getAulaById(id);
         aula.setActive(false);
         return this.aulaRepository.save( aula );
     }
