@@ -13,4 +13,6 @@ public interface ProfesorRepository extends JpaRepository<Profesor, String> {
     Profesor findAllByCi( String ci );
 
     List<Profesor> findAllByActiveTrue();
+
+    Profesor findFirstByIdProfesorAndActiveTrue(String id);
 }

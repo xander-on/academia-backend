@@ -30,12 +30,11 @@ public class MateriaValidations {
     }
 
 
-    public List<String> isValidMateriaId( String id ){
+    public List<String> isValidId( String id ){
         List<String> materiaErrors = new ArrayList<>();
 
-        if( !existMateriaById( id ) ){
+        if( !existMateriaById( id ) )
             materiaErrors.add("No existe una materia con ese id");
-        }
 
         return materiaErrors;
     }

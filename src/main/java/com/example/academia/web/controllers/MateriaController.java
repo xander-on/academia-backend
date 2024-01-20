@@ -40,13 +40,14 @@ public class MateriaController {
     @GetMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getMateriaById( @PathVariable String id ) {
-        List<String> materiaErrors = materiaValidations.isValidMateriaId(id);
+        
         Materia materia = null;
+        List<String> errors = materiaValidations.isValidId(id);
 
-        if( materiaErrors.isEmpty() )
+        if( errors.isEmpty() )
             materia = materiaService.getMateriaById(id);
 
-        return generateResponse.getResponse( materia, materiaErrors );
+        return generateResponse.getResponse( materia, errors );
     }
 
 
@@ -71,7 +72,7 @@ public class MateriaController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> deleteMateriaById( @PathVariable String id ) {
         Materia materiaDeleted = null;
-        List<String> materiaErrors = materiaValidations.isValidMateriaId(id);
+        List<String> materiaErrors = materiaValidations.isValidId(id);
         
         if( materiaErrors.isEmpty() ) 
             materiaDeleted = materiaService.deleteMateriaById( id );

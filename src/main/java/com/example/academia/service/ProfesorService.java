@@ -29,6 +29,10 @@ public class ProfesorService {
         return this.profesorRepository.findById( id ).orElse(null);
     }
 
+    public Profesor getProfesorActiveById( String id ){
+        return this.profesorRepository.findFirstByIdProfesorAndActiveTrue( id );
+    }
+
     public Profesor postProfesor( Profesor profesor ){
         return this.profesorRepository.save(profesor);
     }

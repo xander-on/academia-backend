@@ -28,6 +28,10 @@ public class MateriaService {
         return this.materiaRepository.findById( id ).orElse(null);
     }
 
+    public Materia getMateriaActiveById( String id ){
+        return this.materiaRepository.findFirstByIdMateriaAndActiveTrue(id);
+    }
+
     public Materia postMateria( Materia materia ){
         return this.materiaRepository.save(materia);
     }

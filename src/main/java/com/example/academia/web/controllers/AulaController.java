@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.academia.models.Aula;
 import com.example.academia.service.AulaService;
 import com.example.academia.utils.AulaValidations;
+import com.example.academia.utils.GenerateResponse;
 
 @RestController
 @RequestMapping("/api-academia/v1/aulas")
@@ -30,6 +31,9 @@ public class AulaController {
     @Autowired
     private AulaValidations aulaValidations;
 
+    @Autowired
+    private GenerateResponse generateResponse;
+
     public AulaController(AulaService aulaService) {
         this.aulaService = aulaService;
     }
@@ -38,63 +42,66 @@ public class AulaController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllActiveMaterias() {
         List<Aula> aulas = aulaService.getAllActiveAulas();
-        HashMap<String, Object> response = new HashMap<>();
-
-        response.put("ok", true);
-        response.put("results", aulas);
-        response.put("total", aulas.size());
         
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(aulas);
     }
 
 
     @GetMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAulaById( @PathVariable String id ) {
-        Aula aula = aulaService.getAulaById(id);
-        HashMap<String, Object> response = new HashMap<>();
+
+        Aula aula = null;
+        List<String> errors = aulaValidations.isValidId(id);
         
-        if( aula == null ) {
-            response.put("ok", true);
-            response.put("results", new Object[0]);
-            return ResponseEntity.ok().body(response);
-        }
+        if( errors.isEmpty() ) 
+            aula = aulaService.getAulaById(id);
 
-        List<Aula> resultsList = new ArrayList<>();
-        resultsList.add(aula);
-
-        response.put("ok", true);
-        response.put("results", resultsList);
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(aula, errors);
     }
 
+
+    // @PostMapping()
+    // @CrossOrigin(origins = "*")
+    // public ResponseEntity<?> postAula( @RequestBody Aula aula ) {
+    //     List<String> aulaErrors = aulaValidations.isValidAula(aula);
+    //     HashMap<String, Object> response = new HashMap<>();
+
+    //     if( !aulaErrors.isEmpty() ) {
+    //         Map<String, Object> responseErrors = new HashMap<>();
+    //         responseErrors.put("ok", false);
+    //         responseErrors.put("errors", aulaErrors);
+    //         return ResponseEntity.badRequest().body(responseErrors);
+    //     }
+
+    //     aula.setIdAula( UUID.randomUUID().toString() );
+    //     aula.setActive(true);
+    //     Aula aulaAdd = aulaService.postAula(aula);
+
+    //     List<Aula> resultsList = new ArrayList<>();
+    //     resultsList.add(aulaAdd);
+
+    //     response.put("ok", true);
+    //     response.put("results", resultsList );
+        
+    //     return ResponseEntity.ok(response);
+    // }
 
     @PostMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> postAula( @RequestBody Aula aula ) {
+
+        Aula aulaAdd = null;
         List<String> aulaErrors = aulaValidations.isValidAula(aula);
-        HashMap<String, Object> response = new HashMap<>();
 
-        if( !aulaErrors.isEmpty() ) {
-            Map<String, Object> responseErrors = new HashMap<>();
-            responseErrors.put("ok", false);
-            responseErrors.put("errors", aulaErrors);
-            return ResponseEntity.badRequest().body(responseErrors);
+        if( aulaErrors.isEmpty() ) {
+            aula.setIdAula( UUID.randomUUID().toString() );
+            aula.setActive(true);
+            aulaAdd = aulaService.postAula(aula);
         }
-
-        aula.setIdAula( UUID.randomUUID().toString() );
-        aula.setActive(true);
-        Aula aulaAdd = aulaService.postAula(aula);
-
-        List<Aula> resultsList = new ArrayList<>();
-        resultsList.add(aulaAdd);
-
-        response.put("ok", true);
-        response.put("results", resultsList );
         
-        return ResponseEntity.ok(response);
+        return generateResponse.getResponse(aulaAdd, aulaErrors);
     }
-
 
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*")
