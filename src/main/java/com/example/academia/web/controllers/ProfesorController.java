@@ -5,10 +5,7 @@ import com.example.academia.service.ProfesorService;
 import com.example.academia.utils.GenerateResponse;
 import com.example.academia.utils.ProfesorValidations;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
