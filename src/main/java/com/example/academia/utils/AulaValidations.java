@@ -39,7 +39,7 @@ public class AulaValidations {
             aulaErrors.add("La hora es requerida");
         }
 
-        String idMateria = aula.getMateria().getIdMateria();
+        String idMateria = aula.getMateria().getId();
         String idProfesor = aula.getProfesor().getId();
 
         if( !isActiveMateria( idMateria ) ){

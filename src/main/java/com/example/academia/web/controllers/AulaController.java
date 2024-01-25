@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.academia.models.Aula;
+import com.example.academia.models.AulaResponse;
 import com.example.academia.service.AulaService;
 import com.example.academia.utils.AulaValidations;
 import com.example.academia.utils.GenerateResponse;
@@ -31,8 +32,7 @@ public class AulaController {
     @GetMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllActiveAulas() {
-        List<Aula> aulas = aulaService.getAllActiveAulas();
-        
+        List<AulaResponse> aulas = aulaService.getAllActiveAulas();
         return generateResponse.getResponse(aulas);
     }
 
@@ -49,6 +49,7 @@ public class AulaController {
 
         return generateResponse.getResponse(aula, errors);
     }
+    
 
     @PostMapping()
     @CrossOrigin(origins = "*")
@@ -58,7 +59,7 @@ public class AulaController {
         List<String> aulaErrors = aulaValidations.isValidAula(aula);
 
         if( aulaErrors.isEmpty() ) {
-            aula.setIdAula( UUID.randomUUID().toString() );
+            aula.setId( UUID.randomUUID().toString() );
             aula.setActive(true);
             aulaAdd = aulaService.postAula(aula);
         }

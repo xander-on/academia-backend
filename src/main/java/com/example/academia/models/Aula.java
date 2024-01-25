@@ -19,8 +19,8 @@ import lombok.Setter;
 @Table( name="aulas" )
 public class Aula {
     @Id
-    @Column( name="id_aula", nullable = false, unique = true )
-    private String idAula;
+    @Column( name="id", nullable = false, unique = true )
+    private String id;
 
     @Column( nullable = false, length = 10)
     private String codigo;
@@ -40,12 +40,12 @@ public class Aula {
     @ManyToOne
     @JoinColumn(
         name = "id_materia",
-        referencedColumnName = "id_materia"
+        referencedColumnName = "id"
     ) private Materia materia;
 
     @ManyToOne
     @JoinColumn(
-        name = "id",
+        name = "id_profesor",
         referencedColumnName = "id"
     ) private Profesor profesor;
 }

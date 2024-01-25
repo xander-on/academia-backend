@@ -29,7 +29,7 @@ public class MateriaService {
     }
 
     public Materia getMateriaActiveById( String id ){
-        return this.materiaRepository.findFirstByIdMateriaAndActiveTrue(id);
+        return this.materiaRepository.findFirstByIdAndActiveTrue(id);
     }
 
     public Materia postMateria( Materia materia ){

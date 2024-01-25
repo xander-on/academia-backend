@@ -12,8 +12,8 @@ import lombok.Setter;
 @Table(name = "materias")
 public class Materia {
     @Id
-    @Column( name="id_materia", nullable = false, unique = true )
-    private String idMateria;
+    @Column( name="id", nullable = false, unique = true )
+    private String id;
 
     @Column( nullable = false, length = 60, unique = true )
     private String name;

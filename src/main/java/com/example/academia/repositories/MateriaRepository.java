@@ -11,5 +11,5 @@ public interface MateriaRepository extends JpaRepository<Materia, String> {
 
     List<Materia> findAllByActiveTrue();
 
-    Materia findFirstByIdMateriaAndActiveTrue(String id);
+    Materia findFirstByIdAndActiveTrue(String id);
 }

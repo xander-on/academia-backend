@@ -59,7 +59,7 @@ public class MateriaController {
         List<String> materiaErrors = materiaValidations.isValidMateria(materia);
 
         if( materiaErrors.isEmpty() ) {
-            materia.setIdMateria( UUID.randomUUID().toString() );
+            materia.setId( UUID.randomUUID().toString() );
             materia.setActive(true);
             materiaAdd = materiaService.postMateria(materia);
         }
