@@ -30,7 +30,7 @@ public class AulaController {
 
     @GetMapping()
     @CrossOrigin(origins = "*")
-    public ResponseEntity<?> getAllActiveMaterias() {
+    public ResponseEntity<?> getAllActiveAulas() {
         List<Aula> aulas = aulaService.getAllActiveAulas();
         
         return generateResponse.getResponse(aulas);

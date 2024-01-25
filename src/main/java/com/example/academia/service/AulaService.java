@@ -21,6 +21,7 @@ public class AulaService {
     }
 
     public List<Aula> getAllActiveAulas(){
+        System.out.println(this.aulaRepository.findAllByActiveTrue());
         return this.aulaRepository.findAllByActiveTrue();
     }
 

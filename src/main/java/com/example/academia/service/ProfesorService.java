@@ -30,7 +30,7 @@ public class ProfesorService {
     }
 
     public Profesor getProfesorActiveById( String id ){
-        return this.profesorRepository.findFirstByIdProfesorAndActiveTrue( id );
+        return this.profesorRepository.findFirstByIdAndActiveTrue( id );
     }
 
     public Profesor postProfesor( Profesor profesor ){

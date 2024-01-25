@@ -59,9 +59,9 @@ public class ProfesorController {
         List<String> profesorErrors = profesorValidations.isValidProfesor(profesor);
 
         if( profesorErrors.isEmpty() ) {
-            profesor.setIdProfesor( UUID.randomUUID().toString() );
+            profesor.setId( UUID.randomUUID().toString() );
             profesor.setActive(true);
-            profesor.setPhoto("https://api.multiavatar.com/"+ profesor.getIdProfesor() +".png");
+            profesor.setPhoto("https://api.multiavatar.com/"+ profesor.getId() +".png");
             profesorAdd = profesorService.postProfesor(profesor);
         }
 

@@ -14,8 +14,8 @@ import lombok.Setter;
 @Table(name="profesores")
 public class Profesor {
     @Id
-    @Column( name="id_profesor", nullable = false, unique = true )
-    private String idProfesor;
+    @Column( name="id", nullable = false, unique = true )
+    private String id;
 
     @Size(min = 10, max = 10)
     @Column( nullable = false, length = 10, unique = true )

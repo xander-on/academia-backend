@@ -14,5 +14,5 @@ public interface ProfesorRepository extends JpaRepository<Profesor, String> {
 
     List<Profesor> findAllByActiveTrue();
 
-    Profesor findFirstByIdProfesorAndActiveTrue(String id);
+    Profesor findFirstByIdAndActiveTrue(String id);
 }

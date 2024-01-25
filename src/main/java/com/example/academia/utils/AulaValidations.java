@@ -40,7 +40,7 @@ public class AulaValidations {
         }
 
         String idMateria = aula.getMateria().getIdMateria();
-        String idProfesor = aula.getProfesor().getIdProfesor();
+        String idProfesor = aula.getProfesor().getId();
 
         if( !isActiveMateria( idMateria ) ){
             aulaErrors.add(

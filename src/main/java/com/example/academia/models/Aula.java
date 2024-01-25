@@ -45,7 +45,7 @@ public class Aula {
 
     @ManyToOne
     @JoinColumn(
-        name = "id_profesor",
-        referencedColumnName = "id_profesor"
+        name = "id",
+        referencedColumnName = "id"
     ) private Profesor profesor;
 }
