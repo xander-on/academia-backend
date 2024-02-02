@@ -32,8 +32,9 @@ public class AulaController {
     @GetMapping()
     @CrossOrigin(origins = "*")
     public ResponseEntity<?> getAllActiveAulas() {
-        List<AulaResponse> aulas = aulaService.getAllActiveAulas();
-        return generateResponse.getResponse(aulas);
+        List<Aula> aulas = aulaService.getAllActiveAulas();
+        List<AulaResponse> aulasResponse = generateResponse.getAulasResponse(aulas);
+        return generateResponse.getResponse(aulasResponse);
     }
 
 
@@ -46,8 +47,9 @@ public class AulaController {
         
         if( errors.isEmpty() ) 
             aula = aulaService.getAulaById(id);
+            AulaResponse aulaResponse = generateResponse.getAulaResponse(aula);
 
-        return generateResponse.getResponse(aula, errors);
+        return generateResponse.getResponse(aulaResponse, errors);
     }
     
 

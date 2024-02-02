@@ -7,12 +7,17 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import com.example.academia.models.ApiResponse;
 import com.example.academia.models.Aula;
 import com.example.academia.models.AulaResponse;
 
+
 @Component
 public class GenerateResponse{
+
+    @Value("${base_url}")  
+    private String base_url;
 
     public ResponseEntity<?> getResponse(Object results) {
         return getResponse(results, Collections.emptyList());
@@ -38,7 +43,6 @@ public class GenerateResponse{
             resultsList = Arrays.asList(results);
         }
 
-         // Modificar los campos según sea necesario
          response.setOk(true);
          response.setTotal(resultsList.size());
          response.setResults(resultsList);
@@ -50,19 +54,32 @@ public class GenerateResponse{
 
     public List<AulaResponse> getAulasResponse(List<Aula> aulas){
         List<AulaResponse> aulasResponse = new ArrayList<>();
+        
         for (Aula aula : aulas) {
-            AulaResponse aulaResponse = new AulaResponse();
-            aulaResponse.setId(aula.getId());
-            aulaResponse.setCodigo(aula.getCodigo());
-            aulaResponse.setDate(aula.getDate());
-            aulaResponse.setTime(aula.getTime());
-            aulaResponse.setTheme(aula.getTheme());
-            aulaResponse.setActive(aula.isActive());
-            aulaResponse.setProfesor("http://localhost:8080/api-academia/v1/profesores/" + aula.getProfesor().getId());
-            aulaResponse.setMateria("http://localhost:8080/api-academia/v1/materias/" + aula.getMateria().getId());
+            AulaResponse aulaResponse = createAulaResponse(aula);
             aulasResponse.add(aulaResponse);
         }
         return aulasResponse;
+    }
+
+
+    public AulaResponse getAulaResponse(Aula aula){
+        return createAulaResponse(aula);
+    }
+
+
+    private AulaResponse createAulaResponse(Aula aula){
+        AulaResponse aulaResponse = new AulaResponse();
+        aulaResponse.setId(aula.getId());
+        aulaResponse.setCodigo(aula.getCodigo());
+        aulaResponse.setDate(aula.getDate());
+        aulaResponse.setTime(aula.getTime());
+        aulaResponse.setTheme(aula.getTheme());
+        aulaResponse.setActive(aula.isActive());
+        aulaResponse.setProfesor( base_url + "/profesores/" + aula.getProfesor().getId());
+        aulaResponse.setMateria(base_url + "/materias/" + aula.getMateria().getId());
+
+        return aulaResponse;
     }
     
 }
