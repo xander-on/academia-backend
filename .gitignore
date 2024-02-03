@@ -1,5 +1,6 @@
 .env
 application-prod.properties
+/DB/
 
 HELP.md
 ##target/
