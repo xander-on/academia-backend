@@ -1,10 +1,13 @@
-.env
-!.env.example
-application-dev.properties
-DB/
 
-HELP.md
-##target/
+target/classes
+target/generated-sources
+target/generated-test-sources
+target/maven-archiver
+target/maven-status
+target/surefire-reports
+target/test-classes
+!target/academia-0.0.1-SNAPSHOT.jar
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -36,3 +39,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+.env
+!.env.example
+application-dev.properties
+DB/
+HELP.md
