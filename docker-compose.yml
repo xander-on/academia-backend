@@ -8,5 +8,9 @@ services:
     container_name: 'spring-boot'
     ports:
       - 8080:8080
+    # networks:
+    #   - academia-network
 
-    
+# networks:
+#   academia-network:
+#     external: true
