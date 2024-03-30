@@ -1,6 +1,7 @@
 .env
-application-prod.properties
-/DB/
+!.env.example
+application-dev.properties
+DB/
 
 HELP.md
 ##target/
@@ -35,5 +36,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-.env
